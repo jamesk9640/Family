@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Family - Personal Vault & Hub</title>
+    
+    <!-- FontAwesome Font & Icon Icons -->
+    <link rel="stylesheet" href="fa/css/all.min.css">
+
+    <!-- Native Responsive CSS Stylesheet -->
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --input-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        .dark {
+            --bg-main: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --input-bg: #0f172a;
+            --header-bg: rgba(30, 41, 59, 0.95);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: background-color 0.25s, color 0.25s;
+        }
+
+        /* Touch Optimized Target Standards */
+        button, input, select, textarea {
+            font-family: inherit;
+            font-size: 0.875rem;
+            touch-action: manipulation;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            min-height: 48px;
+            padding: 10px 14px;
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+        }
+
+        /* Label Alignment */
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            line-height: 1.2;
+            text-align: left;
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+            width: 100%;
+        }
+
+        /* Navigation Header Bar */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--header-bg);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--card-border);
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .icon-btn:hover {
+            background-color: var(--card-border);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Dashboard Toolbar & Filters */
+        .toolbar {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-box input {
+            padding-left: 40px;
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .pill-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--card-border);
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 0.775rem;
+            min-height: 38px;
+        }
+
+        .pill-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Grid Cards */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .member-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .card-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            flex-shrink: 0;
+        }
+
+        .card-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .card-info h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .badge-relation {
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 10px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .badge-bday {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #f59e0b;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .card-footer {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Modal Overlays & Windows */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 680px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--card-border);
+            position: relative;
+            z-index: 101;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Drawer Tabs */
+        .tab-bar {
+            display: flex;
+            border-bottom: 1px solid var(--card-border);
+            background: var(--card-bg);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            text-align: center;
+            min-height: 44px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Birthday Banner Alert */
+        .alert-banner {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dark .alert-banner {
+            background: rgba(146, 64, 14, 0.2);
+            color: #fde68a;
+            border-color: rgba(253, 230, 138, 0.2);
+        }
+
+        /* Built-in Canvas Cropper */
+        .cropper-container {
+            width: 100%;
+            height: 280px;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Print Formatting */
+        @media print {
+            header, .toolbar, .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .modal-overlay {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                background: none !important;
+            }
+            .modal-content {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+            }
+        }
+
+        /* ---- Clean dashboard overrides ---- */
+        .dark { color-scheme: dark; }
+        .form-group > label, .modal-body label { margin-bottom: 6px; }
+        .toolbar { margin: 16px 0 14px; gap: 10px; }
+        .search-box { width: 100%; }
+        .filter-pills { scrollbar-width: none; }
+        .filter-pills::-webkit-scrollbar { display: none; }
+        .members-grid { margin-top: 4px; }
+        .member-card { gap: 14px; transition: box-shadow .2s, transform .2s; }
+        .member-card:hover { box-shadow: 0 6px 16px rgba(0,0,0,.08); transform: translateY(-1px); }
+        .card-line { font-size: .75rem; color: var(--text-muted); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-line i { width: 14px; text-align: center; margin-right: 4px; }
+        .card-footer { margin-top: 0; }
+        .detail-actions { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 12px; }
+        .modal-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+        @media (max-width: 480px) { .btn-primary .add-label { display: none; } .header-actions { gap: 4px; } }
+        @media print {
+            body > *:not(#outModal) { display: none !important; }
+            #outModal { display: block !important; position: static !important; opacity: 1 !important; visibility: visible !important; background: none !important; padding: 0 !important; }
+            #outModal .modal-content { box-shadow: none !important; border: none !important; max-height: none !important; overflow: visible !important; max-width: 100% !important; }
+            #outModal .modal-header, #outActions, #outText, #outNote { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Header -->
+    <header>
+        <div class="container header-content">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-users-between-lines"></i>
+                </div>
+                <div>
+                    <h1 style="font-size: 1.1rem; font-weight: 700; line-height: 1.2;">My Family</h1>
+                    <p style="font-size: 0.7rem; color: var(--text-muted);">Personal Vault & Info Hub</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" class="icon-btn" onclick="toggleDarkMode()" title="Toggle Dark/Light Theme">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+                <button type="button" class="icon-btn" onclick="exportData()" title="Backup data">
+                    <i class="fa-solid fa-file-export"></i>
+                </button>
+                <label class="icon-btn" title="Restore data" style="cursor:pointer; margin:0;">
+                    <i class="fa-solid fa-file-import"></i>
+                    <input type="file" onchange="importData(event)" accept=".json" style="display:none;">
+                </label>
+                <button type="button" class="icon-btn" onclick="requestNotificationPermission()" title="Birthday Reminders">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+                <button type="button" class="btn-primary" onclick="openAddMemberModal()">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span class="add-label">Add Member</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Viewport -->
+    <main class="container" style="flex-grow: 1; padding-top: 16px;">
+
+        <!-- Search & Filter Bar -->
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" oninput="filterMembers()" placeholder="Search name, phone, occupation, ID...">
+            </div>
+
+            <div class="filter-pills" id="relationFilterContainer">
+                <button type="button" class="pill-btn active" onclick="setFilter(event, 'ALL')">All Members</button>
+                <button type="button" class="pill-btn" onclick="setFilter(event, 'Self')">Self</button>
+                <button type="button" class="pill-btn" onclick="setFilter(event, 'Father')">Father</button>
+                <button type="button" class="pill-btn" onclick="setFilter(event, 'Mother')">Mother</button>
+                <button type="button" class="pill-btn" onclick="setFilter(event, 'Spouse')">Spouse</button>
+                <button type="button" class="pill-btn" onclick="setFilter(event, 'Son')">Son</button>
+                <button type="button" class="pill-btn" onclick="setFilter(event, 'Daughter')">Daughter</button>
+                <button type="button" class="pill-btn" onclick="setFilter(event, 'Other')">Others</button>
+            </div>
+        </div>
+
+        <!-- Birthday Alert Banner -->
+        <div id="birthdayBanner" class="alert-banner" style="display: none;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-cake-candles" style="font-size: 1.2rem;"></i>
+                <div>
+                    <h4 style="font-size: 0.85rem; font-weight: 700;">Upcoming Birthdays (Next 7 Days)</h4>
+                    <p id="birthdayBannerText" style="font-size: 0.75rem; margin-top: 2px;"></p>
+                </div>
+            </div>
+            <button type="button" onclick="document.getElementById('birthdayBanner').style.display='none'" style="background: transparent; color: inherit;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Grid Container -->
+        <div id="membersGrid" class="members-grid"></div>
+
+        <!-- Empty State View -->
+        <div id="emptyState" style="display: none; text-align: center; padding: 48px 16px; background: var(--card-bg); border: 2px dashed var(--card-border); border-radius: 16px; margin: 20px 0;">
+            <i class="fa-solid fa-users" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 12px;"></i>
+            <h3 style="font-size: 1rem; font-weight: 700;">No Family Members Stored</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Click "+ Add Member" above to record personal details and document files.</p>
+        </div>
+    </main>
+
+    <!-- Add/Edit Member Modal -->
+    <div id="memberModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle" style="font-size: 1rem; font-weight: 700;">Add Family Member</h3>
+                <button type="button" class="icon-btn" onclick="closeMemberModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="memberForm" onsubmit="saveMember(event)">
+                    <input type="hidden" id="memberId">
+                    <input type="hidden" id="photoData">
+
+                    <!-- Photo Select & Preview -->
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                        <div style="position: relative;">
+                            <img id="avatarPreview" src="https://placehold.co/100x100/2563eb/ffffff?text=Photo" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
+                            <label style="position: absolute; bottom: 0; right: 0; background: var(--primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; margin: 0;">
+                                <i class="fa-solid fa-camera" style="font-size: 0.8rem;"></i>
+                                <input type="file" id="photoInput" onchange="handlePhotoSelect(event)" accept="image/*" style="display: none;">
+                            </label>
+                        </div>
+                        <div>
+                            <p style="font-size: 0.85rem; font-weight: 700;">Profile Photo</p>
+                            <p style="font-size: 0.75rem; color: var(--text-muted);">Tap camera icon to crop and set photo.</p>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information Grid -->
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" required placeholder="e.g. Jane Doe">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nickname">Nickname</label>
+                            <input type="text" id="nickname" placeholder="e.g. Janey">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="relationSelect">Relationship *</label>
+                            <select id="relationSelect" onchange="toggleCustomRelation()" required>
+                                <option value="">Select Relationship</option>
+                                <option value="Self">Self</option>
+                                <option value="Father">Father</option>
+                                <option value="Mother">Mother</option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Son">Son</option>
+                                <option value="Daughter">Daughter</option>
+                                <option value="Brother">Brother</option>
+                                <option value="Sister">Sister</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="customRelationGroup" style="display: none;">
+                            <label for="customRelationInput">Specify Custom Relationship *</label>
+                            <input type="text" id="customRelationInput" placeholder="e.g. Uncle, Cousin">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender">
+                                <option value="">Unspecified</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dob">Date of Birth *</label>
+                            <input type="date" id="dob" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bloodGroup">Blood Group</label>
+                            <select id="bloodGroup">
+                                <option value="">Unknown</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phoneNumber">Mobile Phone</label>
+                            <input type="tel" id="phoneNumber" placeholder="+1234567890">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emailAddress">Email Address</label>
+                            <input type="email" id="emailAddress" placeholder="name@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="occupation">Occupation / Role</label>
+                            <input type="text" id="occupation" placeholder="e.g. Teacher, Student">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergencyContact">Emergency Contact</label>
+                            <input type="text" id="emergencyContact" placeholder="Contact Name & Number">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="idNumber">Aadhaar / Primary ID</label>
+                            <input type="text" id="idNumber" placeholder="Govt Identification No.">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="panPassport">PAN / Passport / DL</label>
+                            <input type="text" id="panPassport" placeholder="Secondary ID Number">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 14px;">
+                        <label for="address">Residential Address</label>
+                        <textarea id="address" rows="2" placeholder="Full home address..."></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 14px;">
+                        <label for="medicalNotes">Medical / Health Remarks</label>
+                        <textarea id="medicalNotes" rows="2" placeholder="Allergies, regular medications or health conditions..."></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--card-border);">
+                        <button type="button" class="pill-btn" onclick="closeMemberModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Profile View Drawer -->
+    <div id="detailModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 800px; height: 85vh; display: flex; flex-direction: column;">
+            
+            <!-- Banner Header -->
+            <div class="detail-banner" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 16px 20px 20px; flex-shrink: 0;">
+                <div class="detail-actions no-print">
+                    <button type="button" onclick="shareWhatsApp()" style="background: #10b981; color: white; padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 0.75rem;">
+                        <i class="fa-brands fa-whatsapp"></i> Share
+                    </button>
+                    <button type="button" onclick="printProfile()" style="background: rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 0.75rem;">
+                        <i class="fa-solid fa-print"></i> Print
+                    </button>
+                    <button type="button" onclick="closeDetailModal()" style="background: transparent; color: white; font-size: 1.1rem; padding: 4px 8px;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <img id="detailAvatar" src="" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.3);">
+                    <div>
+                        <h2 id="detailName" style="font-size: 1.2rem; font-weight: 700;"></h2>
+                        <span id="detailRelationBadge" style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase;"></span>
+                        <p id="detailDobBlood" style="font-size: 0.75rem; opacity: 0.9; margin-top: 4px;"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Navigation Tabs -->
+            <div class="tab-bar no-print" style="flex-shrink:0;">
+                <button type="button" class="tab-btn active" id="tab-vaultTab" onclick="switchTab('vaultTab')"><i class="fa-solid fa-folder"></i> Document Vault</button>
+                <button type="button" class="tab-btn" id="tab-notesTab" onclick="switchTab('notesTab')"><i class="fa-solid fa-key"></i> Notes & Passwords</button>
+                <button type="button" class="tab-btn" id="tab-infoTab" onclick="switchTab('infoTab')"><i class="fa-solid fa-id-card"></i> Personal Info</button>
+            </div>
+
+            <!-- Tab Viewport Container -->
+            <div class="modal-scroll">
+                
+                <!-- Tab 1: Document Vault -->
+                <div id="vaultTab" class="tab-content active">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;" class="no-print">
+                        <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">ID DOCUMENTS & FILES</h4>
+                        <label class="btn-primary" style="padding: 6px 12px; font-size: 0.75rem; cursor: pointer;">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Document
+                            <input type="file" id="docFileInput" multiple onchange="uploadDocument(event)" style="display: none;">
+                        </label>
+                    </div>
+                    <div id="documentsList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+
+                <!-- Tab 2: Notes & Passwords -->
+                <div id="notesTab" class="tab-content">
+                    <form onsubmit="saveNote(event)" style="background: var(--bg-main); padding: 14px; border-radius: 12px; border: 1px solid var(--card-border); margin-bottom: 16px;" class="no-print">
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label for="noteTitle">Title / Account Name</label>
+                            <input type="text" id="noteTitle" required placeholder="e.g. Bank Account, Health Policy">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label for="noteContent">Confidential Details / Notes</label>
+                            <textarea id="noteContent" rows="3" required placeholder="Type instructions, passcodes or sensitive details..."></textarea>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <label style="display: flex; align-items: center; gap: 8px; margin: 0; cursor: pointer;">
+                                <input type="checkbox" id="noteIsPassword" style="width: auto; min-height: auto;">
+                                <span style="font-size: 0.75rem;">Mask content as sensitive</span>
+                            </label>
+                            <button type="submit" class="btn-primary" style="padding: 6px 14px; font-size: 0.75rem;">Save Note</button>
+                        </div>
+                    </form>
+                    <div id="notesList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+
+                <!-- Tab 3: Detailed Bio Data -->
+                <div id="infoTab" class="tab-content">
+                    <div class="form-grid" style="font-size: 0.85rem;">
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Nickname</span><strong id="infoNickname">-</strong></div>
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Gender</span><strong id="infoGender">-</strong></div>
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Calculated Age</span><strong id="infoAge">-</strong></div>
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Blood Group</span><strong id="infoBlood">-</strong></div>
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Mobile Phone</span><strong id="infoPhone">-</strong></div>
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Email Address</span><strong id="infoEmail">-</strong></div>
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Occupation</span><strong id="infoOccupation">-</strong></div>
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Emergency Contact</span><strong id="infoEmergency">-</strong></div>
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Aadhaar / Primary ID</span><strong id="infoIdNumber">-</strong></div>
+                        <div><span style="color: var(--text-muted); display: block; font-size: 0.75rem;">PAN / Passport / DL</span><strong id="infoPanPassport">-</strong></div>
+                    </div>
+                    <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--card-border);">
+                        <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Residential Address</span>
+                        <p id="infoAddress" style="font-weight: 600; margin-top: 2px;">-</p>
+                    </div>
+                    <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--card-border);">
+                        <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">Medical Remarks</span>
+                        <p id="infoMedical" style="font-weight: 600; margin-top: 2px;">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Embedded Canvas Cropper Modal -->
+    <div id="cropperModal" class="modal-overlay" style="z-index: 110;">
+        <div class="modal-content" style="max-width: 420px; padding: 16px;">
+            <div class="modal-header" style="padding: 0 0 12px 0;">
+                <h3 style="font-size: 0.95rem; font-weight: 700;">Crop Photo</h3>
+                <button type="button" class="icon-btn" onclick="closeCropperModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="cropper-container" style="height:auto; display:flex; justify-content:center; padding:8px;">
+                <canvas id="cropperCanvas" style="width:100%; max-width:300px; aspect-ratio:1; border-radius:50%; cursor:move; touch-action:none; background:#fff;"></canvas>
+            </div>
+            <p style="font-size: 0.7rem; color: var(--text-muted); text-align: center; margin-top: 8px;">Drag to move, use slider to zoom.</p>
+            <input type="range" id="cropZoom" min="1" max="4" step="0.05" value="1" style="width:100%; margin-top:6px;">
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
+                <button type="button" class="pill-btn" onclick="closeCropperModal()">Cancel</button>
+                <button type="button" class="btn-primary" onclick="applyCanvasCrop()">Apply Crop</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Output / Share / Export Modal -->
+    <div id="outModal" class="modal-overlay" style="z-index: 130;">
+        <div class="modal-content" style="max-width: 520px;">
+            <div class="modal-header">
+                <h3 id="outTitle" style="font-size: 0.95rem; font-weight: 700;"></h3>
+                <button type="button" class="icon-btn" onclick="closeOut()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div style="padding: 16px;">
+                <p id="outNote" style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px;"></p>
+                <div id="outPreview"></div>
+                <textarea id="outText" rows="7" style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--card-border); background: var(--bg-main); color: var(--text-main); font-size: 0.75rem; font-family: monospace;"></textarea>
+                <div id="outActions" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Viewer Modal -->
+    <div id="docViewerModal" class="modal-overlay" style="z-index: 120;">
+        <div class="modal-content" style="max-width: 800px; height: 80vh; display: flex; flex-direction: column;">
+            <div class="modal-header" style="flex-shrink:0; gap:8px;">
+                <h3 id="docViewerTitle" style="font-size: 0.9rem; font-weight: 700; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Document View</h3>
+                <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                    <a id="docViewerLink" href="#" target="_blank" rel="noopener" class="pill-btn" style="text-decoration:none; display:inline-flex; align-items:center;"><i class="fa-solid fa-up-right-from-square" style="margin-right:6px;"></i>Open in new tab</a>
+                    <button type="button" class="icon-btn" onclick="closeDocViewer()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+            <div id="docViewerContent" style="flex: 1 1 auto; min-height: 0; background: var(--bg-main); overflow: auto; display: flex; align-items: center; justify-content: center; padding: 10px;"></div>
+        </div>
+    </div>
+
+    <!-- Main Logic Script -->
+    <script>
+        let familyMembers = [];
+        let currentMemberId = null;
+        let activeFilter = 'ALL';
+        let db = null;
+        let cropImageObj = null;
+        let cropCanvasContext = null;
+
+        const B = window.AndroidBridge || null; // present only inside the Android app
+
+        // In-app messages (browser alert/confirm are blocked or silent in many in-app viewers)
+        function showToast(msg) {
+            let t = document.getElementById('appToast');
+            if (!t) {
+                t = document.createElement('div'); t.id = 'appToast';
+                t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:88%;background:#111827;color:#fff;padding:12px 16px;border-radius:12px;font-size:.85rem;z-index:300;white-space:pre-line;box-shadow:0 6px 20px rgba(0,0,0,.3);display:none;';
+                document.body.appendChild(t);
+            }
+            t.textContent = msg; t.style.display = 'block';
+            clearTimeout(t._h); t._h = setTimeout(() => { t.style.display = 'none'; }, 4000);
+        }
+        window.alert = function (msg) { showToast(String(msg)); };
+        function askConfirm(msg) {
+            return new Promise(res => {
+                const o = document.createElement('div');
+                o.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:310;display:flex;align-items:center;justify-content:center;padding:20px;';
+                const b = document.createElement('div');
+                b.style.cssText = 'background:var(--bg-main,#fff);color:var(--text-main,#111);border-radius:16px;padding:20px;max-width:340px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.3);';
+                const p = document.createElement('p'); p.textContent = msg; p.style.cssText = 'font-size:.95rem;font-weight:600;margin-bottom:16px;';
+                const row = document.createElement('div'); row.style.cssText = 'display:flex;gap:10px;justify-content:flex-end;';
+                const done = v => { o.remove(); res(v); };
+                const no = document.createElement('button'); no.type = 'button'; no.className = 'pill-btn'; no.textContent = 'Cancel'; no.onclick = () => done(false);
+                const yes = document.createElement('button'); yes.type = 'button'; yes.className = 'btn-primary'; yes.textContent = 'OK'; yes.onclick = () => done(true);
+                row.append(no, yes); b.append(p, row); o.appendChild(b); document.body.appendChild(o);
+            });
+        }
+
+        const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try { initTheme(); } catch (e) {}
+            initIndexedDB();
+            initCropper();
+            loadMembers();
+
+            // Event delegation (safe for any id/name characters)
+            document.getElementById('membersGrid').addEventListener('click', e => {
+                const b = e.target.closest('[data-act]');
+                if (!b) return;
+                if (b.dataset.act === 'open') openDetailModal(b.dataset.id);
+                else if (b.dataset.act === 'edit') editMember(b.dataset.id);
+                else if (b.dataset.act === 'delete') deleteMember(b.dataset.id);
+            });
+            document.getElementById('documentsList').addEventListener('click', e => {
+                const b = e.target.closest('[data-act]');
+                if (!b) return;
+                if (b.dataset.act === 'view') viewDocument(b.dataset.id);
+                else if (b.dataset.act === 'download') downloadDocument(b.dataset.id);
+                else if (b.dataset.act === 'delete') deleteDocument(b.dataset.id);
+            });
+            document.getElementById('notesList').addEventListener('click', e => {
+                const b = e.target.closest('[data-note]');
+                if (!b) return;
+                if (b.dataset.note === 'delete') deleteNote(b.dataset.id);
+                else if (b.dataset.note === 'toggle') toggleMask(b.dataset.id);
+            });
+            document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => {
+                if (e.target !== o) return;
+                if (o.id === 'docViewerModal') closeDocViewer(); else o.classList.remove('active');
+            }));
+        });
+
+        // Theme Setup
+        function initTheme() {
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+            }
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+
+        // Local Storage Database
+        function loadMembers() {
+            try { familyMembers = JSON.parse(localStorage.getItem('my_family_data') || '[]'); } catch (e) { familyMembers = []; }
+            if (!Array.isArray(familyMembers)) familyMembers = [];
+            renderMembers();
+            checkBirthdays();
+        }
+
+        function saveMembers() {
+            try { localStorage.setItem('my_family_data', JSON.stringify(familyMembers)); }
+            catch (e) { alert('Could not save: browser storage is full or blocked.'); }
+            renderMembers();
+            checkBirthdays();
+        }
+
+        // IndexedDB Document Storage
+        function getDB() {
+            if (db) return Promise.resolve(db);
+            return new Promise((resolve, reject) => {
+                if (!window.indexedDB) return reject(new Error('This browser does not support document storage'));
+                let req;
+                try { req = indexedDB.open('MyFamilyVaultDB', 1); } catch (err) { return reject(err); }
+                req.onupgradeneeded = (e) => {
+                    const d = e.target.result;
+                    if (!d.objectStoreNames.contains('documents')) d.createObjectStore('documents', { keyPath: 'id' });
+                };
+                req.onsuccess = (e) => { db = e.target.result; resolve(db); };
+                req.onerror = () => reject(req.error || new Error('Could not open document storage'));
+                req.onblocked = () => reject(new Error('Document storage is blocked'));
+            });
+        }
+        function initIndexedDB() { getDB().catch(() => {}); }
+        function idb(mode, fn) {
+            return getDB().then(d => new Promise((res, rej) => {
+                const tx = d.transaction('documents', mode);
+                const r = fn(tx.objectStore('documents'));
+                tx.oncomplete = () => res(r && r.result);
+                tx.onerror = tx.onabort = () => rej(tx.error || new Error('Storage error'));
+            }));
+        }
+
+        // Relationship Selection Toggle
+        function toggleCustomRelation() {
+            const rel = document.getElementById('relationSelect').value;
+            const group = document.getElementById('customRelationGroup');
+            const input = document.getElementById('customRelationInput');
+            if (rel === 'Other') {
+                group.style.display = 'flex';
+                input.required = true;
+            } else {
+                group.style.display = 'none';
+                input.required = false;
+                input.value = '';
+            }
+        }
+
+        // Modal Controls
+        function openAddMemberModal() {
+            document.getElementById('memberForm').reset();
+            document.getElementById('memberId').value = '';
+            document.getElementById('photoData').value = '';
+            document.getElementById('avatarPreview').src = 'https://placehold.co/100x100/2563eb/ffffff?text=Photo';
+            document.getElementById('modalTitle').innerText = 'Add Family Member';
+            toggleCustomRelation();
+            document.getElementById('memberModal').classList.add('active');
+        }
+
+        function closeMemberModal() {
+            document.getElementById('memberModal').classList.remove('active');
+        }
+
+        // Member Data Processing
+        function saveMember(e) {
+            e.preventDefault();
+            const id = document.getElementById('memberId').value || 'mem_' + Date.now();
+            const rel = document.getElementById('relationSelect').value;
+
+            const memberObj = {
+                id,
+                fullName: document.getElementById('fullName').value.trim(),
+                nickname: document.getElementById('nickname').value.trim(),
+                relation: rel,
+                customRelation: rel === 'Other' ? document.getElementById('customRelationInput').value.trim() : '',
+                gender: document.getElementById('gender').value,
+                dob: document.getElementById('dob').value,
+                bloodGroup: document.getElementById('bloodGroup').value,
+                phoneNumber: document.getElementById('phoneNumber').value.trim(),
+                emailAddress: document.getElementById('emailAddress').value.trim(),
+                occupation: document.getElementById('occupation').value.trim(),
+                emergencyContact: document.getElementById('emergencyContact').value.trim(),
+                idNumber: document.getElementById('idNumber').value.trim(),
+                panPassport: document.getElementById('panPassport').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                medicalNotes: document.getElementById('medicalNotes').value.trim(),
+                photo: document.getElementById('photoData').value || 'https://placehold.co/100x100/2563eb/ffffff?text=' + encodeURIComponent(document.getElementById('fullName').value.charAt(0) || 'F'),
+                notes: []
+            };
+
+            const idx = familyMembers.findIndex(m => m.id === id);
+            if (idx > -1) {
+                memberObj.notes = familyMembers[idx].notes || [];
+                familyMembers[idx] = memberObj;
+            } else {
+                familyMembers.push(memberObj);
+            }
+
+            saveMembers();
+            closeMemberModal();
+        }
+
+        function editMember(id) {
+            const m = familyMembers.find(x => x.id === id);
+            if (!m) return;
+
+            document.getElementById('memberId').value = m.id;
+            document.getElementById('fullName').value = m.fullName || '';
+            document.getElementById('nickname').value = m.nickname || '';
+            document.getElementById('relationSelect').value = m.relation || '';
+            document.getElementById('customRelationInput').value = m.customRelation || '';
+            document.getElementById('gender').value = m.gender || '';
+            document.getElementById('dob').value = m.dob || '';
+            document.getElementById('bloodGroup').value = m.bloodGroup || '';
+            document.getElementById('phoneNumber').value = m.phoneNumber || '';
+            document.getElementById('emailAddress').value = m.emailAddress || '';
+            document.getElementById('occupation').value = m.occupation || '';
+            document.getElementById('emergencyContact').value = m.emergencyContact || '';
+            document.getElementById('idNumber').value = m.idNumber || '';
+            document.getElementById('panPassport').value = m.panPassport || '';
+            document.getElementById('address').value = m.address || '';
+            document.getElementById('medicalNotes').value = m.medicalNotes || '';
+            document.getElementById('photoData').value = m.photo || '';
+            document.getElementById('avatarPreview').src = m.photo;
+
+            toggleCustomRelation();
+            document.getElementById('modalTitle').innerText = 'Edit Member Profile';
+            document.getElementById('memberModal').classList.add('active');
+        }
+
+        function deleteMember(id) {
+            askConfirm("Delete this family member profile?").then(ok => {
+                if (!ok) return;
+                familyMembers = familyMembers.filter(m => m.id !== id);
+                idb('readwrite', s => { s.getAll().onsuccess = ev => ev.target.result.filter(d => d.memberId === id).forEach(d => s.delete(d.id)); }).catch(() => {});
+                saveMembers();
+            });
+        }
+
+        // Render Dashboard Cards
+        function renderMembers() {
+            const grid = document.getElementById('membersGrid');
+            const empty = document.getElementById('emptyState');
+            const query = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = familyMembers.filter(m => {
+                const qMatch = [m.fullName, m.nickname, m.phoneNumber, m.occupation, m.emailAddress, m.idNumber, m.panPassport]
+                    .some(v => v && String(v).toLowerCase().includes(query));
+
+                let rMatch = true;
+                if (activeFilter !== 'ALL') {
+                    if (activeFilter === 'Other') {
+                        rMatch = !['Self','Father','Mother','Spouse','Son','Daughter'].includes(m.relation);
+                    } else {
+                        rMatch = m.relation === activeFilter;
+                    }
+                }
+                return qMatch && rMatch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                empty.style.display = 'block';
+                empty.querySelector('h3').innerText = familyMembers.length ? 'No matching members' : 'No Family Members Stored';
+                return;
+            }
+
+            empty.style.display = 'none';
+            grid.innerHTML = filtered.map(m => {
+                const bday = isUpcomingBirthday(m.dob);
+                const rel = esc(m.relation === 'Other' ? (m.customRelation || 'Other') : m.relation);
+                const id = esc(m.id);
+                return `
+                <div class="member-card">
+                    <div class="card-header" data-act="open" data-id="${id}" style="cursor: pointer;">
+                        <img src="${esc(m.photo)}" class="card-avatar" alt="">
+                        <div class="card-info">
+                            <h3>${esc(m.fullName)}</h3>
+                            <span class="badge-relation">${rel}</span>${bday ? ' <span class="badge-relation" style="background: rgba(245,158,11,0.15); color: #d97706;"><i class="fa-solid fa-cake-candles"></i> Birthday soon</span>' : ''}
+                            ${m.occupation ? `<p class="card-line"><i class="fa-solid fa-briefcase"></i>${esc(m.occupation)}</p>` : ''}
+                            ${m.phoneNumber ? `<p class="card-line"><i class="fa-solid fa-phone"></i>${esc(m.phoneNumber)}</p>` : ''}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn-primary" data-act="open" data-id="${id}" style="padding: 8px 14px; font-size: 0.8rem; min-height: 38px;">
+                            <i class="fa-solid fa-folder-open"></i> Open Vault
+                        </button>
+                        <div>
+                            <button type="button" data-act="edit" data-id="${id}" class="icon-btn" title="Edit" style="width: 34px; height: 34px; display: inline-flex;"><i class="fa-solid fa-pen"></i></button>
+                            <button type="button" data-act="delete" data-id="${id}" class="icon-btn" title="Delete" style="width: 34px; height: 34px; display: inline-flex; color: #ef4444;"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // Profile Drawer Operations
+        function openDetailModal(id) {
+            currentMemberId = id;
+            const m = familyMembers.find(x => x.id === id);
+            if (!m) return;
+
+            document.getElementById('detailAvatar').src = m.photo;
+            document.getElementById('detailName').innerText = m.fullName;
+            document.getElementById('detailRelationBadge').innerText = m.relation === 'Other' ? m.customRelation : m.relation;
+            document.getElementById('detailDobBlood').innerText = `DOB: ${m.dob || 'N/A'} (${calcAge(m.dob)}) • Blood: ${m.bloodGroup || 'N/A'}`;
+
+            document.getElementById('infoNickname').innerText = m.nickname || '-';
+            document.getElementById('infoGender').innerText = m.gender || '-';
+            document.getElementById('infoAge').innerText = calcAge(m.dob);
+            document.getElementById('infoBlood').innerText = m.bloodGroup || '-';
+            document.getElementById('infoPhone').innerText = m.phoneNumber || '-';
+            document.getElementById('infoEmail').innerText = m.emailAddress || '-';
+            document.getElementById('infoOccupation').innerText = m.occupation || '-';
+            document.getElementById('infoEmergency').innerText = m.emergencyContact || '-';
+            document.getElementById('infoIdNumber').innerText = m.idNumber || '-';
+            document.getElementById('infoPanPassport').innerText = m.panPassport || '-';
+            document.getElementById('infoAddress').innerText = m.address || '-';
+            document.getElementById('infoMedical').innerText = m.medicalNotes || '-';
+
+            switchTab('vaultTab');
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+
+            if (tabId === 'vaultTab') loadDocs();
+            if (tabId === 'notesTab') loadNotes();
+        }
+
+        function calcAge(dobStr) {
+            const p = /^(\d{4})-(\d{2})-(\d{2})/.exec(dobStr || '');
+            if (!p) return 'N/A';
+            const t = new Date();
+            let age = t.getFullYear() - +p[1];
+            if (t.getMonth() + 1 < +p[2] || (t.getMonth() + 1 === +p[2] && t.getDate() < +p[3])) age--;
+            return age < 0 ? 'N/A' : age + ' years';
+        }
+
+        // Photo Cropper (drag + zoom)
+        const CROP = { img: null, cx: 0, cy: 0, zoom: 1, size: 300, drag: null };
+        function cropScale() { return CROP.size / Math.min(CROP.img.width, CROP.img.height) * CROP.zoom; }
+        function drawCrop() {
+            if (!CROP.img) return;
+            const c = document.getElementById('cropperCanvas'), ctx = c.getContext('2d');
+            const s = cropScale(), half = CROP.size / 2 / s;
+            CROP.cx = Math.min(Math.max(CROP.cx, half), CROP.img.width - half);
+            CROP.cy = Math.min(Math.max(CROP.cy, half), CROP.img.height - half);
+            ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+            ctx.drawImage(CROP.img, CROP.cx - half, CROP.cy - half, half * 2, half * 2, 0, 0, CROP.size, CROP.size);
+        }
+        function initCropper() {
+            const c = document.getElementById('cropperCanvas');
+            c.addEventListener('pointerdown', e => { if (!CROP.img) return; CROP.drag = { x: e.clientX, y: e.clientY }; if (c.setPointerCapture) { try { c.setPointerCapture(e.pointerId); } catch (x) {} } e.preventDefault(); });
+            c.addEventListener('pointermove', e => {
+                if (!CROP.drag) return;
+                const k = CROP.size / c.getBoundingClientRect().width / cropScale();
+                CROP.cx -= (e.clientX - CROP.drag.x) * k; CROP.cy -= (e.clientY - CROP.drag.y) * k;
+                CROP.drag = { x: e.clientX, y: e.clientY }; drawCrop();
+            });
+            const end = () => { CROP.drag = null; };
+            c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
+            document.getElementById('cropZoom').addEventListener('input', e => { CROP.zoom = +e.target.value; drawCrop(); });
+        }
+        function handlePhotoSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onerror = () => alert('Could not read this photo.');
+            reader.onload = (evt) => {
+                const img = new Image();
+                img.onerror = () => alert('This image format is not supported. Please choose a JPG or PNG photo.');
+                img.onload = () => {
+                    const canvas = document.getElementById('cropperCanvas');
+                    canvas.width = CROP.size; canvas.height = CROP.size;
+                    CROP.img = img; CROP.cx = img.width / 2; CROP.cy = img.height / 2; CROP.zoom = 1;
+                    document.getElementById('cropZoom').value = 1;
+                    document.getElementById('cropperModal').classList.add('active');
+                    drawCrop();
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        function closeCropperModal() {
+            document.getElementById('cropperModal').classList.remove('active');
+            document.getElementById('photoInput').value = '';
+            CROP.img = null; CROP.drag = null;
+        }
+        function applyCanvasCrop() {
+            if (!CROP.img) return closeCropperModal();
+            const dataUrl = document.getElementById('cropperCanvas').toDataURL('image/jpeg', 0.85);
+            document.getElementById('avatarPreview').src = dataUrl;
+            document.getElementById('photoData').value = dataUrl;
+            closeCropperModal();
+        }
+
+        // Document Vault Operations
+        function guessType(doc) {
+            if (doc.type) return doc.type;
+            const ext = String(doc.name || '').split('.').pop().toLowerCase();
+            return ({ pdf: 'application/pdf', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', gif: 'image/gif', webp: 'image/webp', txt: 'text/plain', mp4: 'video/mp4', mp3: 'audio/mpeg' })[ext] || '';
+        }
+        const isMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        async function saveBlob(blob, name) {
+            if (B && B.saveFile) {
+                try {
+                    const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1] || ''); r.onerror = () => rej(r.error); r.readAsDataURL(blob); });
+                    const where = B.saveFile(name, b64, blob.type || 'application/octet-stream');
+                    alert(where ? 'Saved to ' + where : 'Could not save the file.');
+                } catch (e) { alert('Could not save the file.'); }
+                return;
+            }
+            try {
+                const f = new File([blob], name, { type: blob.type });
+                if (isMobile() && navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: name }); return; }
+            } catch (e) { if (e && e.name === 'AbortError') return; }
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = name;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 30000);
+        }
+        function docBlob(doc) {
+            const parts = String(doc.data || '').split(',');
+            const mime = ((parts[0] || '').match(/:(.*?)[;,]/) || [])[1] || doc.type || 'application/octet-stream';
+            const bin = atob(parts[1] || '');
+            const arr = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+            return new Blob([arr], { type: guessType(doc) || mime });
+        }
+
+        function uploadDocument(e) {
+            const input = e.target;
+            const files = Array.from(input.files || []);
+            const memberId = currentMemberId;
+            if (!files.length || !memberId) return;
+
+            Promise.all(files.map(file => new Promise((res, rej) => {
+                const r = new FileReader();
+                r.onload = () => res({
+                    id: 'doc_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+                    memberId, name: file.name, type: file.type,
+                    data: r.result, uploadedAt: new Date().toLocaleDateString()
+                });
+                r.onerror = () => rej(r.error);
+                r.readAsDataURL(file);
+            })))
+            .then(docs => idb('readwrite', s => { docs.forEach(d => s.add(d)); }))
+            .then(loadDocs)
+            .catch(err => alert('Upload failed: ' + ((err && err.message) || err)))
+            .then(() => { input.value = ''; });
+        }
+
+        function loadDocs() {
+            const container = document.getElementById('documentsList');
+            const memberId = currentMemberId;
+            if (!memberId) return Promise.resolve();
+            return idb('readonly', s => s.getAll()).then(all => {
+                if (memberId !== currentMemberId) return;
+                const docs = (all || []).filter(d => d.memberId === memberId);
+                if (docs.length === 0) {
+                    container.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted);">No documents stored in vault yet.</p>`;
+                    return;
+                }
+                container.innerHTML = docs.map(d => {
+                    const icon = (d.type || '').startsWith('image/') ? 'fa-file-image' : (d.type === 'application/pdf' ? 'fa-file-pdf' : 'fa-file');
+                    const id = esc(d.id);
+                    return `
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px; background: var(--bg-main); border-radius: 10px; border: 1px solid var(--card-border);">
+                        <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                            <i class="fa-solid ${icon}" style="color: var(--primary); font-size: 1.2rem;"></i>
+                            <div style="min-width: 0;">
+                                <p style="font-size: 0.8rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${esc(d.name)}</p>
+                                <span style="font-size: 0.7rem; color: var(--text-muted);">${esc(d.uploadedAt)}</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 6px; flex-shrink: 0;">
+                            <button type="button" data-act="view" data-id="${id}" class="pill-btn" style="padding: 4px 10px; font-size: 0.7rem; min-height: 32px;">View</button>
+                            <button type="button" data-act="download" data-id="${id}" class="btn-primary" style="padding: 4px 10px; font-size: 0.7rem; min-height: 32px;">Download</button>
+                            <button type="button" data-act="delete" data-id="${id}" class="icon-btn" style="width: 32px; height: 32px; color: #ef4444;"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>`;
+                }).join('');
+            }).catch(err => {
+                container.innerHTML = `<p style="font-size: 0.8rem; color: #ef4444;">Document storage isn't available here (${esc(err && err.message)}). Open the app in a normal Chrome/Safari tab (not private mode or an in-app preview).</p>`;
+            });
+        }
+
+        let viewerUrl = null, viewToken = 0;
+        function closeDocViewer() {
+            viewToken++;
+            document.getElementById('docViewerModal').classList.remove('active');
+            document.getElementById('docViewerContent').innerHTML = '';
+            if (viewerUrl) { URL.revokeObjectURL(viewerUrl); viewerUrl = null; }
+        }
+
+        function loadPdfJs() {
+            if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+            const bases = ['pdfjs/', 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/'];
+            const tryLoad = i => new Promise((res, rej) => {
+                if (i >= bases.length) return rej(new Error('PDF viewer could not load'));
+                const s = document.createElement('script');
+                s.src = bases[i] + 'pdf.min.js';
+                s.onload = () => { pdfjsLib.GlobalWorkerOptions.workerSrc = bases[i] + 'pdf.worker.min.js'; res(pdfjsLib); };
+                s.onerror = () => { s.remove(); tryLoad(i + 1).then(res, rej); };
+                document.head.appendChild(s);
+            });
+            return tryLoad(0);
+        }
+
+        async function renderPdf(blob, box, token) {
+            const lib = await loadPdfJs();
+            const pdf = await lib.getDocument({ data: await blob.arrayBuffer() }).promise;
+            if (token !== viewToken) return;
+            box.innerHTML = ''; box.style.display = 'block';
+            const width = Math.max(box.clientWidth - 20, 280), dpr = Math.min(window.devicePixelRatio || 1, 2);
+            for (let n = 1; n <= pdf.numPages; n++) {
+                const page = await pdf.getPage(n);
+                if (token !== viewToken) return;
+                const vp = page.getViewport({ scale: width / page.getViewport({ scale: 1 }).width * dpr });
+                const cv = document.createElement('canvas');
+                cv.width = vp.width; cv.height = vp.height;
+                cv.style.cssText = 'width:100%; height:auto; display:block; margin:0 auto 10px; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.2);';
+                box.appendChild(cv);
+                await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+            }
+        }
+
+        function viewDocument(docId) {
+            idb('readonly', s => s.get(docId)).then(doc => {
+                if (!doc) { alert('Document not found.'); return; }
+                const blob = docBlob(doc);
+                const token = ++viewToken;
+                if (viewerUrl) URL.revokeObjectURL(viewerUrl);
+                viewerUrl = URL.createObjectURL(blob);
+                const type = blob.type || guessType(doc), u = viewerUrl;
+                const box = document.getElementById('docViewerContent');
+                box.style.display = 'flex';
+                let html = '';
+                if (type.startsWith('image/')) html = `<img src="${u}" alt="" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
+                else if (type.startsWith('video/')) html = `<video src="${u}" controls playsinline style="max-width: 100%; max-height: 100%;"></video>`;
+                else if (type.startsWith('audio/')) html = `<audio src="${u}" controls></audio>`;
+                else if (type.startsWith('text/')) html = `<iframe src="${u}" style="width: 100%; height: 100%; border: none; background: #fff;"></iframe>`;
+                else if (type === 'application/pdf') html = `<p style="color: var(--text-muted);">Loading PDF...</p>`;
+                else html = `<p style="text-align: center; color: var(--text-muted); padding: 20px;">Preview isn't available for this file type.<br>Please use Download.</p>`;
+
+                document.getElementById('docViewerTitle').innerText = doc.name;
+                box.innerHTML = html;
+                const lk = document.getElementById('docViewerLink'); lk.href = u; if (B) lk.style.display = 'none';
+                document.getElementById('docViewerModal').classList.add('active');
+
+                if (type === 'application/pdf') {
+                    renderPdf(blob, box, token).catch(err => {
+                        if (token !== viewToken) return;
+                        box.style.display = 'flex';
+                        box.innerHTML = `<iframe src="${u}" style="width: 100%; height: 100%; border: none; background: #fff;"></iframe>`;
+                    });
+                }
+            }).catch(err => alert('Could not open this document: ' + ((err && err.message) || err)));
+        }
+
+        function downloadDocument(docId) {
+            idb('readonly', s => s.get(docId)).then(doc => {
+                if (doc) return saveBlob(docBlob(doc), doc.name);
+            }).catch(err => alert('Download failed: ' + ((err && err.message) || err)));
+        }
+
+        function deleteDocument(docId) {
+            askConfirm("Delete document?").then(ok => {
+                if (!ok) return;
+                idb('readwrite', s => { s.delete(docId); }).then(loadDocs).catch(err => alert('Delete failed: ' + err.message));
+            });
+        }
+
+        // Confidential Notes Operations
+        function saveNote(e) {
+            e.preventDefault();
+            if (!currentMemberId) return;
+
+            const m = familyMembers.find(x => x.id === currentMemberId);
+            if (!m) return;
+
+            if (!m.notes) m.notes = [];
+            m.notes.push({
+                id: 'note_' + Date.now(),
+                title: document.getElementById('noteTitle').value.trim(),
+                content: document.getElementById('noteContent').value.trim(),
+                isPassword: document.getElementById('noteIsPassword').checked
+            });
+
+            saveMembers();
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+            document.getElementById('noteIsPassword').checked = false;
+            loadNotes();
+        }
+
+        function loadNotes() {
+            const m = familyMembers.find(x => x.id === currentMemberId);
+            const container = document.getElementById('notesList');
+            if (!m || !m.notes || m.notes.length === 0) {
+                container.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted);">No notes recorded yet.</p>`;
+                return;
+            }
+
+            container.innerHTML = m.notes.map(n => `
+                <div style="background: var(--bg-main); padding: 12px; border-radius: 10px; border: 1px solid var(--card-border);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <strong style="font-size: 0.85rem;">${esc(n.title)}</strong>
+                        <button type="button" data-note="delete" data-id="${esc(n.id)}" style="background: transparent; color: #ef4444; font-size: 0.8rem;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <p id="noteText_${esc(n.id)}" style="font-size: 0.8rem; font-family: ${n.isPassword ? 'monospace' : 'inherit'}; word-break: break-all; white-space: pre-wrap;">${n.isPassword ? '••••••••••••' : esc(n.content)}</p>
+                    ${n.isPassword ? `<button type="button" data-note="toggle" data-id="${esc(n.id)}" style="background: transparent; color: var(--primary); font-size: 0.75rem; font-weight: bold; margin-top: 6px;"><i class="fa-solid fa-eye"></i> Show/Hide</button>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function toggleMask(id) {
+            const m = familyMembers.find(x => x.id === currentMemberId);
+            const n = m && m.notes.find(x => x.id === id);
+            const el = document.getElementById('noteText_' + id);
+            if (!n || !el) return;
+            el.textContent = el.dataset.shown === '1' ? '••••••••••••' : n.content;
+            el.dataset.shown = el.dataset.shown === '1' ? '0' : '1';
+        }
+
+        function deleteNote(noteId) {
+            const m = familyMembers.find(x => x.id === currentMemberId);
+            if (!m) return;
+            m.notes = m.notes.filter(n => n.id !== noteId);
+            saveMembers();
+            loadNotes();
+        }
+
+        // WhatsApp Share Generator
+        function relOf(m) { return m.relation === 'Other' ? (m.customRelation || 'Other') : m.relation; }
+
+        function shareWhatsApp() {
+            const m = familyMembers.find(x => x.id === currentMemberId);
+            if (!m) return;
+            const rows = [['Relation', relOf(m)], ['Date of Birth', m.dob], ['Blood Group', m.bloodGroup], ['Phone', m.phoneNumber], ['Email', m.emailAddress], ['Occupation', m.occupation], ['Emergency Contact', m.emergencyContact], ['Address', m.address]];
+            const text = `*Family Member Profile: ${m.fullName}*\n` + rows.filter(r => r[1]).map(r => `• ${r[0]}: ${r[1]}`).join('\n');
+            const q = encodeURIComponent(text);
+            const actions = B && B.whatsapp
+                ? [{ label: '<i class="fa-brands fa-whatsapp"></i> Open WhatsApp', primary: true, fn: () => B.whatsapp(text) }]
+                : [{ label: '<i class="fa-brands fa-whatsapp"></i> Open WhatsApp', primary: true, href: 'https://wa.me/?text=' + q }];
+            if (!B && isMobile()) actions.push({ label: 'WhatsApp app', href: 'whatsapp://send?text=' + q });
+            actions.push({ label: '<i class="fa-solid fa-copy"></i> Copy', fn: copyOut });
+            if (B && B.shareText) actions.push({ label: '<i class="fa-solid fa-share-nodes"></i> More', fn: () => B.shareText(text) });
+            else if (navigator.share) actions.push({ label: '<i class="fa-solid fa-share-nodes"></i> More', fn: () => shareOutText(m.fullName) });
+            showOut({ title: 'Share profile', text, note: 'Tap Open WhatsApp and choose a chat. If WhatsApp does not open, tap Copy and paste the message into WhatsApp.', actions });
+        }
+
+        function printProfile() {
+            const m = familyMembers.find(x => x.id === currentMemberId);
+            if (!m) return;
+            const rows = [['Relation', relOf(m)], ['Nickname', m.nickname], ['Gender', m.gender], ['Date of Birth', m.dob ? `${m.dob} (${calcAge(m.dob)})` : ''], ['Blood Group', m.bloodGroup], ['Phone', m.phoneNumber], ['Email', m.emailAddress], ['Occupation', m.occupation], ['Emergency Contact', m.emergencyContact], ['ID Number', m.idNumber], ['PAN / Passport', m.panPassport], ['Address', m.address], ['Medical Notes', m.medicalNotes]].filter(r => r[1]);
+            const body = `<div style="background:#fff;color:#111;padding:16px;border-radius:10px;font-family:Arial,sans-serif;"><div style="display:flex;gap:14px;align-items:center;"><img src="${esc(m.photo)}" alt="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;"><div><div style="font-size:1.3rem;font-weight:700;">${esc(m.fullName)}</div><div style="color:#555;">${esc(relOf(m))}</div></div></div><table style="border-collapse:collapse;width:100%;margin-top:14px;font-size:.85rem;">${rows.map(r => `<tr><td style="border-bottom:1px solid #ddd;padding:7px;width:35%;font-weight:700;color:#555;vertical-align:top;">${esc(r[0])}</td><td style="border-bottom:1px solid #ddd;padding:7px;white-space:pre-wrap;">${esc(r[1])}</td></tr>`).join('')}</table></div>`;
+            const file = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(m.fullName)}</title></head><body style="margin:0;padding:16px;">${body}</body></html>`;
+            const actions = [
+                { label: '<i class="fa-solid fa-print"></i> Print / PDF', primary: true, fn: () => { if (B && B.printPage) { B.printPage(file, m.fullName || 'Profile'); return; } try { window.print(); } catch (e) { alert('Printing is not available here. Use Save as file.'); } } },
+                { label: '<i class="fa-solid fa-download"></i> Save as file', fn: () => saveBlob(new Blob([file], { type: 'text/html' }), (m.fullName || 'profile') + '_profile.html') }
+            ];
+            showOut({ title: 'Print profile', html: body, text: null, note: 'Tap Print. If your device cannot print from here, tap Save as file, open it in Chrome and print or save as PDF, or take a screenshot.', actions });
+        }
+
+        // Birthday helpers (date parsed as local date, no timezone shift)
+        function daysToBirthday(s) {
+            const p = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || '');
+            if (!p) return null;
+            const t = new Date(); t.setHours(0, 0, 0, 0);
+            let n = new Date(t.getFullYear(), +p[2] - 1, +p[3]);
+            if (n < t) n = new Date(t.getFullYear() + 1, +p[2] - 1, +p[3]);
+            return Math.round((n - t) / 86400000);
+        }
+        function isUpcomingBirthday(s) { const d = daysToBirthday(s); return d !== null && d <= 7; }
+        function upcomingBirthdays(limit) {
+            return familyMembers.map(m => ({ name: m.fullName, days: daysToBirthday(m.dob) }))
+                .filter(u => u.days !== null && u.days <= limit).sort((a, b) => a.days - b.days);
+        }
+        const fmtDays = d => d === 0 ? 'Today!' : d === 1 ? 'Tomorrow' : 'in ' + d + ' days';
+        const bdayText = list => list.map(u => `${u.name} (${fmtDays(u.days)})`).join(', ');
+
+        function checkBirthdays() {
+            const up = upcomingBirthdays(7);
+            const banner = document.getElementById('birthdayBanner');
+            if (up.length) { banner.style.display = 'flex'; document.getElementById('birthdayBannerText').innerText = bdayText(up); }
+            else banner.style.display = 'none';
+            notifyBirthdays(up.filter(u => u.days <= 1));
+            if (B && B.setBirthdays) {
+                try { B.setBirthdays(familyMembers.filter(m => /^\d{4}-\d{2}-\d{2}/.test(m.dob || '')).map(m => String(m.fullName).replace(/[|;]/g, ' ') + '|' + m.dob.slice(5, 10)).join(';')); } catch (e) {}
+            }
+        }
+
+        function notifyBirthdays(list) {
+            if (B) return; // the app schedules its own daily reminder
+            if (!list.length || !('Notification' in window) || Notification.permission !== 'granted') return;
+            const key = 'bday_notified_' + new Date().toDateString();
+            try { if (localStorage.getItem(key)) return; localStorage.setItem(key, '1'); } catch (e) {}
+            try { new Notification('Birthday reminder', { body: bdayText(list) }); } catch (e) {}
+        }
+
+        function requestNotificationPermission() {
+            const up = upcomingBirthdays(30);
+            const summary = up.length ? 'Upcoming birthdays (30 days):\n' + up.map(u => `• ${u.name} - ${fmtDays(u.days)}`).join('\n') : 'No birthdays in the next 30 days.';
+            const show = extra => { alert(summary + (extra ? '\n\n' + extra : '')); checkBirthdays(); };
+            if (B && B.requestNotifications) { B.requestNotifications(); return show('Birthday reminders arrive every morning at 9 AM, even when the app is closed.'); }
+            if (!('Notification' in window)) return show('Phone notifications are not supported here. The reminder banner shows on the dashboard whenever you open the app.');
+            if (Notification.permission === 'granted') return show('Notifications are on.');
+            if (Notification.permission === 'denied') return show('Notifications are blocked in your browser settings.');
+            try {
+                Promise.resolve(Notification.requestPermission(p => {})).then(p => show(p === 'granted' ? 'Notifications are on.' : '')).catch(() => show(''));
+            } catch (e) { show(''); }
+        }
+
+        function setFilter(e, rel) {
+            activeFilter = rel;
+            document.querySelectorAll('#relationFilterContainer .pill-btn').forEach(b => b.classList.remove('active'));
+            if (e && e.currentTarget) e.currentTarget.classList.add('active');
+            renderMembers();
+        }
+
+        function filterMembers() {
+            renderMembers();
+        }
+
+        function closeTopModal() {
+            const open = [...document.querySelectorAll('.modal-overlay.active')].sort((a, b) => (+getComputedStyle(b).zIndex || 0) - (+getComputedStyle(a).zIndex || 0))[0];
+            if (!open) return false;
+            if (open.id === 'docViewerModal') closeDocViewer();
+            else if (open.id === 'outModal') closeOut();
+            else if (open.id === 'cropperModal') closeCropperModal();
+            else open.classList.remove('active');
+            return true;
+        }
+
+        function closeOut() { document.getElementById('outModal').classList.remove('active'); }
+
+        function showOut(o) {
+            document.getElementById('outTitle').innerText = o.title;
+            document.getElementById('outNote').innerText = o.note || '';
+            const pv = document.getElementById('outPreview'), ta = document.getElementById('outText');
+            pv.innerHTML = o.html || '';
+            ta.style.display = o.text == null ? 'none' : 'block';
+            ta.value = o.text || '';
+            const box = document.getElementById('outActions');
+            box.innerHTML = '';
+            o.actions.forEach(a => {
+                const el = document.createElement(a.href ? 'a' : 'button');
+                if (a.href) { el.href = a.href; el.target = '_blank'; el.rel = 'noopener'; el.style.textDecoration = 'none'; }
+                else { el.type = 'button'; el.addEventListener('click', a.fn); }
+                el.className = a.primary ? 'btn-primary' : 'pill-btn';
+                el.style.cssText += 'padding: 8px 14px; font-size: 0.8rem; min-height: 38px; display: inline-flex; align-items: center; gap: 6px;';
+                el.innerHTML = a.label;
+                box.appendChild(el);
+            });
+            document.getElementById('outModal').classList.add('active');
+        }
+
+        function copyOut() {
+            const ta = document.getElementById('outText'), t = ta.value;
+            const legacy = () => {
+                ta.focus(); ta.select(); ta.setSelectionRange(0, t.length);
+                let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+                alert(ok ? 'Copied!' : 'Could not copy automatically. Press and hold the text, choose Select all, then Copy.');
+            };
+            if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(() => alert('Copied!')).catch(legacy);
+            else legacy();
+        }
+
+        function shareOutText(title) {
+            const t = document.getElementById('outText').value;
+            navigator.share({ title, text: t }).catch(e => { if (e && e.name !== 'AbortError') alert('Sharing is not available here. Use Copy instead.'); });
+        }
+
+        function exportData() {
+            const json = JSON.stringify(familyMembers);
+            const name = `my_family_backup_${new Date().toISOString().slice(0, 10)}.json`;
+            const actions = [
+                { label: '<i class="fa-solid fa-download"></i> Save file', primary: true, fn: () => saveBlob(new Blob([json], { type: 'application/json' }), name) },
+                { label: '<i class="fa-solid fa-copy"></i> Copy backup text', fn: copyOut }
+            ];
+            if (B && B.shareText) actions.push({ label: '<i class="fa-solid fa-share-nodes"></i> Share', fn: () => B.shareText(json) });
+            else if (navigator.share) actions.push({ label: '<i class="fa-solid fa-share-nodes"></i> Share', fn: () => shareOutText('My Family backup') });
+            actions.push({ label: '<i class="fa-solid fa-file-import"></i> Restore from text in box', fn: () => { restoreFromText(document.getElementById('outText').value).then(ok => { if (ok) closeOut(); }); } });
+            showOut({ title: 'Backup / Restore', text: json,
+                note: 'Tap Save file. If no file downloads on your device, tap Copy backup text and paste it somewhere safe (Notes, or WhatsApp "message yourself"). To restore, paste the text in the box below and tap Restore. Documents in the vault are not included.',
+                actions });
+        }
+
+        function restoreFromText(text) {
+            let imported;
+            try { imported = JSON.parse(text); } catch (e) { alert('Invalid backup data.'); return Promise.resolve(false); }
+            if (!Array.isArray(imported)) { alert('Invalid backup data.'); return Promise.resolve(false); }
+            return askConfirm('Replace all current family data with this backup?').then(ok => {
+                if (!ok) return false;
+                familyMembers = imported;
+                saveMembers();
+                alert('Family database restored successfully!');
+                checkBirthdays();
+                return true;
+            });
+        }
+
+        function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => { restoreFromText(evt.target.result); e.target.value = ''; };
+            reader.onerror = () => alert('Could not read this file.');
+            reader.readAsText(file);
+        }
+</script>
+</body>
+</html>
